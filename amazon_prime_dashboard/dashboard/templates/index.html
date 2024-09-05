@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Amazone Prime video Dashbord</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="icon" href="{% static '/assets/img/amazon_prime_video.png' %}" type="image/x-icon" />
+
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static '/assets/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static '/assets/css/plugins.min.css' %}" />
+    <link rel="stylesheet" href="{% static '/assets/css/kaiadmin.min.css' %}" />
+
+    
+    
+</head>
+<body>
+    <div class="wrapper">
+     
+        <div class="container">
+          <div class="page-inner">
+            <div
+              class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+            >
+              <div>
+                <h3 class="fw-bold mb-3">Amazon Prime video Dashbord</h3>
+                
+              </div>
+
+              <div class="ms-md-auto py-2 py-md-0">
+                <form action="/" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input type="file" name="file" accept=".csv, .xlsx" required class="btn btn-primary btn-round">
+                  <button type="submit" class="btn btn-primary btn-round">Upload and Analyze</button>
+                </form>
+              </div>
+            
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-icon">
+                        <div
+                          class="icon-big text-center icon-primary bubble-shadow-small"
+                          style="background-color:  #010280 ; padding: 20px; border-radius: 10px;"
+                        >
+                          <i class="fa-solid fa-film"></i>
+                        </div>
+                      </div>
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                          <p class="card-category">Total titles</p>
+                          <h4 class="card-title">{{ total_titles }}</h4> 
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-icon">
+                        <div
+                          class="icon-big text-center icon-info bubble-shadow-small"
+                          style="background-color:  #1A4870 ; padding: 20px; border-radius: 10px;"
+                        >
+                          <i class="fas fa-user-check"></i>
+                        </div>
+                      </div>
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                          <p class="card-category">Total rating</p>
+                          <h4 class="card-title">{{ total_ratings }}</h4> 
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-icon">
+                        <div
+                          class="icon-big text-center icon-success bubble-shadow-small"
+                          style="background-color:  #227B94 ; padding: 20px; border-radius: 10px;"
+                        >
+                          <i class="fa-solid fa-star"></i>
+                        </div>
+                      </div>
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                          <p class="card-category">Total Genres</p>
+                          <h4 class="card-title">{{ total_genres}}</h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+
+              <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-icon">
+                        <div
+                          class="icon-big text-center icon-success bubble-shadow-small"
+                          style="background-color:  #5B99C2 ; padding: 20px; border-radius:10px;"
+                        >
+                          <i class="fas fa-users"></i>
+                        </div>
+                      </div>
+                      <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                          <p class="card-category">Total Directors</p>
+                          <h4 class="card-title">{{ total_directors }}</h4> 
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+
+      
+            </div>
+            
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-round">
+                  <div class="card-header">
+                    <div class="card-head-row">
+                      <div class="card-title">Total number of shows by genre </div>
+                      
+                    </div>
+                    {% if graph %}
+                    <div class="card-body">
+                      {{ graph|safe }}
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  
+                </div>
+              </div>
+              
+              
+            </div>
+
+            <div class="row">
+              <!-- Première carte -->
+              <div class="col-md-6"> 
+                  <div class="card card-round">
+                      <div class="card-header">
+                          <div class="card-head">
+                              <h4 class="card-title">Users Geolocation</h4>
+                          </div>
+                          
+                      </div>
+                      <div class="card-body">
+                        {% if map %}
+                        {{ map|safe }}
+                        {% else %}
+                        <p>No data available for country distribution.</p>
+                        {% endif %}
+                    </div>
+                  </div>
+              </div>
+          
+
+              <div class="col-md-6">
+                <div class="card card-round">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <h4 class="card-title">Distribution of Movies and TV Shows</h4>
+                            <div class="card-tools">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                              {% if pie %}
+                              <div>{{ pie|safe }}</div>
+                          {% else %}
+                              <p>No data available for movie and TV show distribution.</p>
+                          {% endif %}
+                    </div>
+                </div>
+            </div>
+
+          </div>
+          
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card card-round">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <div class="card-title">Total Shows by Rating</div>
+                            <div class="card-tools"></div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        {% if histo %}
+                            <div>{{ histo|safe }}</div>  <!-- Affichage du graphique -->
+                        {% else %}
+                            <p>No data available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+              <div class="col-md-6">
+                <div class="card card-round">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <div class="card-title">Total TV Shows and Movies by Release Year</div>
+                            <div class="card-tools"></div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        {% if line %}
+                            <div>{{ line|safe }}</div>  <!-- Affichage du graphique -->
+                        {% else %}
+                            <p>No data available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            </div>
+          </div>
+        </div>
+      
+
+     
+    </div>
+    
+    
+    
+  </body>
+</html>
